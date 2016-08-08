@@ -1,4 +1,6 @@
 import ecs100.*;
+
+import java.awt.Color;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -26,7 +28,9 @@ public class Server  {
 				ServerSocket serverSocket = new ServerSocket(port);	
 				Socket socket = serverSocket.accept();
 				connections.add(new Connection(socket));
-				connections.get(connections.size()-1).run();
+				UI.clearGraphics();
+				UI.setColor(Color.red);
+				UI.drawString(Integer.toString(connections.size()), 0, 0);
 				if(connections.size()>=2){
 					readyToStart=true;
 				} else {
@@ -42,11 +46,14 @@ public class Server  {
 		}
 	}
 	
-	public class Connection extends Thread {
+	public class Connection extends Thread { // Thread for each client
 		private Socket s;
+		
 		public Connection(Socket s){
 			this.s=s;
 			UI.println("New connection established.");
+			run();
+		
 		}
 		
 		public void run(){
@@ -67,7 +74,7 @@ public class Server  {
 	            		String line = scanner.nextLine();
 	            		UI.println(line);
 	            		if(line.equals("click")){
-	            			
+	            			UI.println("Click recieved");
 	            		}
 	            	}
 	                UI.sleep(1);

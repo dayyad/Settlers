@@ -90,10 +90,12 @@ public class Game {
 	    }
 	
 	private void doMouse(String action,double x, double y){
+		UI.println("Mouse pressed");
 		if(playing && connected){
 			if(action.equals("pressed")){
 				//Sends click packet to server
 				Click click = new Click(x,y);
+				UI.println("Sending click");
 				PS.println("click");
 				try {
 					objectOutput.writeObject(click);
