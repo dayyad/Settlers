@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Server  {
 	private int port;
 	private ArrayList<Connection> connections = new ArrayList<Connection>();
+	private boolean readyToStart=false;
 	
 	public Server (int port){
 		this.port = port;
@@ -19,8 +20,15 @@ public class Server  {
 				Socket socket = serverSocket.accept();
 				connections.add(new Connection(socket));
 				connections.get(connections.size()-1).run();
+				if(connections.size()>=2){
+					readyToStart=true;
+				} else {
+					readyToStart=false;
+				}
+				if(readyToStart){
+					UI.addButton("Start Game", this::startGame);
+				}
 			}
-			
 			
 		} catch (IOException e){
 			UI.println("Exception: " + e);
@@ -51,6 +59,10 @@ public class Server  {
 				}
             }
 		}
+	}
+	
+	private void startGame(){
+		Board board = new Board(UI.askInt("Board width: "),UI.askInt("Board height: "));
 	}
 
 }
