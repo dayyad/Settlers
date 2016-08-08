@@ -7,10 +7,17 @@ import java.util.Scanner;
 
 public class Server  {
 	private int port;
+	
 	private ArrayList<Connection> connections = new ArrayList<Connection>();
+	private ArrayList<Player> players = new ArrayList<Player>();
+	
 	private boolean readyToStart=false;
 	
 	public Server (int port){
+		//Emptying the old arrays;
+		connections = new ArrayList<Connection>();
+		players = new ArrayList<Player>();
+		
 		this.port = port;
 		UI.println("Server started:");
 		
@@ -43,12 +50,19 @@ public class Server  {
 		}
 		
 		public void run(){
+			Player player = new Player(s);
+			
             while(true){
             	Scanner scanner;
+            	ObjectInputStream objectInput;
+				ObjectOutputStream objectOutput;
             	
 				try {
-					
+					//Creates object and scanners IO for each client
+					objectInput=new ObjectInputStream(s.getInputStream());
+					objectOutput=new ObjectOutputStream(s.getOutputStream());
 					scanner = new Scanner(s.getInputStream());
+					
 	            	if(scanner.hasNextLine()){
 	            		UI.println(scanner.nextLine());
 	            	}
@@ -62,7 +76,10 @@ public class Server  {
 	}
 	
 	private void startGame(){
-		Board board = new Board(UI.askInt("Board width: "),UI.askInt("Board height: "));
+		if(readyToStart){
+			Board board = new Board(UI.askInt("Board width: "),UI.askInt("Board height: "));
+			 
+		}
 	}
 
 }
