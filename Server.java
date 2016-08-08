@@ -27,7 +27,10 @@ public class Server  {
 			while(true){
 				ServerSocket serverSocket = new ServerSocket(port);	
 				Socket socket = serverSocket.accept();
-				connections.add(new Connection(socket));
+				Connection c = new Connection(socket);
+				connections.add(c);
+				c.start();
+				
 				UI.clearGraphics();
 				UI.setColor(Color.red);
 				UI.drawString(Integer.toString(connections.size()), 0, 0);
@@ -52,8 +55,6 @@ public class Server  {
 		public Connection(Socket s){
 			this.s=s;
 			UI.println("New connection established.");
-			run();
-		
 		}
 		
 		public void run(){

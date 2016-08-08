@@ -53,7 +53,7 @@ public class Game {
 	            
 	            UI.addButton("Send meme", this::sendMeme);
 	            listener = new Listener();
-	            listener.run();
+	            listener.start();
 	           
 	        } catch (IOException e) {
 	            // TODO Auto-generated catch block
