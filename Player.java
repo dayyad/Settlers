@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -5,6 +6,7 @@ import java.util.Map;
 import ecs100.*;
 
 public class Player {
+	String[] tileTypes = {"grain","ore","brick","wood","sheep","sea"}; 
 	
 	public Socket socket;
 	private static int lastId =1;
@@ -22,6 +24,9 @@ public class Player {
 	}
 	
 	public void draw(){
-		
+		for(int i =0; i < 5;i++){
+			UI.setColor(Color.black);
+			UI.drawString(tileTypes[i] + ": "+inv.get(tileTypes[i]),i*20, 0);
+		}
 	}
 }

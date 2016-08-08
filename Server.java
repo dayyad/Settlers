@@ -64,7 +64,11 @@ public class Server  {
 					scanner = new Scanner(s.getInputStream());
 					
 	            	if(scanner.hasNextLine()){
-	            		UI.println(scanner.nextLine());
+	            		String line = scanner.nextLine();
+	            		UI.println(line);
+	            		if(line.equals("click")){
+	            			
+	            		}
 	            	}
 	                UI.sleep(1);
 	                
@@ -77,7 +81,7 @@ public class Server  {
 	
 	private void startGame(){
 		if(readyToStart){
-			Board board = new Board(UI.askInt("Board width: "),UI.askInt("Board height: "));
+			Board board = new Board(30+UI.askInt("Board width: "),UI.askInt("Board height: "));
 			 
 		}
 	}
