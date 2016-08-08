@@ -31,10 +31,11 @@ public class Game {
 	        try {
 	            socket = null;
 
-	            socket = new Socket(ip,port); //Creates connection to socket
+	            socket = new Socket(UI.askString("IP address"),UI.askInt("Port: ")); //Creates connection to socket
 	            scanner=new Scanner(socket.getInputStream());
 	            PS = new PrintStream(socket.getOutputStream());
-
+	            
+	            UI.addButton("Send meme", this::sendMeme);
 	            listener = new Listener();
 	            listener.run();
 	           
@@ -48,6 +49,7 @@ public class Game {
 	 public class Listener extends Thread {  //Waits for server and adds to the in queue
 	        @Override
 	        public void run(){
+	        	UI.println("Listener Started: ");
 	            while(true){
 	                if(scanner.hasNextLine()){
 	                    String line = scanner.nextLine();
@@ -56,14 +58,19 @@ public class Game {
 	            }
 	        }
 	    }
+	 
+	private void sendMeme(){
+		PS.println("FUCK");
+		UI.println("Attempted to send a fuck");
+	}
 	
 	private void createServer(){
-		
+		Server server = new Server(UI.askInt("Port: "));
 	}
 	
 
 	public static void main(String[] args) {
-		
+		Game game = new Game();
 	}
 
 }
