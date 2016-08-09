@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import ecs100.*;
 
-public class Tile {
+public class Tile implements Serializable {
 	private double x;
 	private double y;
 	public String type;

@@ -68,10 +68,6 @@ public class Server  {
 			Player player = new Player(s);
 			UI.println("New connection established.");
 			
-			Scanner scanner;
-			PrintStream PS;
-        	ObjectInputStream objectI;
-			ObjectOutputStream objectO;
 			try {
 				
 //				objectI = new ObjectInputStream(s.getInputStream());
@@ -79,37 +75,36 @@ public class Server  {
 				while(stayConnected){ //Main connection loop
 					UI.println("connected");
 					
-					PS = new PrintStream(s.getOutputStream());
-					scanner = new Scanner(s.getInputStream());
-	            	
-					boolean followedByObject = false;
-					String followingObject;
+					ObjectInputStream objectI = new ObjectInputStream(s.getInputStream());
+					ObjectOutputStream objectO = new ObjectOutputStream(s.getOutputStream());
 					
-	            	if(scanner.hasNextLine()){
-	            		String line = scanner.nextLine();
-	            		UI.println("Server: Recieved: " + line);
-	            		if(line.equals("click")){
-	            			objectI = new ObjectInputStream(s.getInputStream());
-	            			processClick((Click)objectI.readObject());
-	            		} else if (line.equals("")){
-	            			
-	            		}
-	            	}
-	            	
+					try { // DO all incoming reading in here.
+						Object obj = objectI.readObject();
+						if(obj instanceof Click){
+							UI.println("Click recieved");
+						}
+						
+						
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					 //All the outbound packets here
 	            	if(serverBoard!= null){
 	            		readyToStart=false;
-	            		PS.println("board");
+	            		objectO.writeObject(serverBoard);
 	            	}
 	            	
-	            	PS.println("player");
+	            	objectO.writeObject(players.get(id));
 	            	
+	            	
+	            	objectO.close();
+	            	objectI.close();
 	                UI.sleep(1);
-	                scanner.close();
-	                PS.close();
 				}	
 				
 				
-			} catch (IOException | ClassNotFoundException e1) {
+			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
@@ -122,6 +117,8 @@ public class Server  {
 	private void startGame(){
 		if(readyToStart){
 			serverBoard = new Board(30+UI.askInt("Board width: "),UI.askInt("Board height: "));
+			serverBoard.draw();
+			UI.repaintGraphics();
 		}
 	}
 

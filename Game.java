@@ -1,6 +1,9 @@
 import ecs100.*;
+
+import java.awt.List;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -11,14 +14,16 @@ public class Game {
 	
 	
 	private boolean connected = false;
-	private Socket socket;
+	private Socket socket = null;
 	private Scanner scanner;
 	private PrintStream PS;
 	private Listener listener;
 	
+	private ArrayList<Object> outQ = new ArrayList<Object>();
+	
 	//Object IO for catching objects
-	private ObjectInputStream objectInput;
-	private ObjectOutputStream objectOutput;
+	private ObjectInputStream objectI;
+	private ObjectOutputStream objectO;
 	
 	private Board clientBoard = null;
 	private Player clientPlayer = null;
@@ -46,12 +51,7 @@ public class Game {
 	        try {
 	            socket = null;
 	            socket = new Socket(UI.askString("IP address"),UI.askInt("Port: ")); //Creates connection to socket
-	            scanner=new Scanner(socket.getInputStream());
-	            PS = new PrintStream(socket.getOutputStream());
-	            //objectInput = new ObjectInputStream(socket.getInputStream());
-	            //objectOutput = new ObjectOutputStream(socket.getOutputStream());
 	            
-	            UI.addButton("Send meme", this::sendMeme);
 	            listener = new Listener();
 	            listener.start();
 	           
@@ -71,50 +71,65 @@ public class Game {
 	        	//On connection happens here!
 	        	UI.println("Listener Started: ");
 	        	connected = true;
-	            while(true){
-	                if(scanner.hasNextLine()){
-	                    String line = scanner.nextLine();
-	                   // try {
-	                    	if(line.equals("board")){ // In case of board being passed
-	                    		UI.println("recieving board package");
-	                    		//clientBoard=(Board)(objectInput.readObject());
-		                    } else if (line.equals("player")){
-		                    	UI.println("recieving player package");
-		                    	//updatePlayer((Player)(objectInput.readObject()));
-		                    }
-						//} catch (ClassNotFoundException e) {
-						//	e.printStackTrace();
-						//} catch (IOException e) {
-						//	e.printStackTrace();
-						//}
-	                    
-	                    draw();
-	                }
+	            while(socket!=null){
+	            	
+	            	
+	            	try {//Creates a generic object that can be matched against all possible cases later on.
+	            		objectI = new ObjectInputStream(socket.getInputStream());
+		            	
+	            		
+						Object obj = (Object)objectI.readObject();
+						
+						if(obj instanceof Player){
+							//UI.println("Player recieved");
+							clientPlayer=(Player)obj;
+						} else if(obj instanceof Board){
+							//UI.println("Board recieved");
+							clientBoard = (Board) obj;
+						}
+						
+						objectI.close();
+						
+					} catch (ClassNotFoundException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            	
+	            	
+					try {
+						objectO = new ObjectOutputStream(socket.getOutputStream());
+						while(outQ.size()!=0){
+							objectO.writeObject(outQ.remove(outQ.size()-1));
+							objectO.flush();
+						}
+		            	objectO.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+						
+				}
+	            	
+	            	
+	            	draw();
 	            }
 	        }
-	    }
+	    
 	
 	private void doMouse(String action,double x, double y){
 		UI.println("Mouse pressed");
-		if( connected){
+		if(socket!=null){
 			if(action.equals("pressed")){
 				//Sends click packet to server
 				Click click = new Click(x,y,this.clientPlayer);
 				UI.println("Sending click");
-				PS.println("click");
 				try {
-					objectOutput = new ObjectOutputStream(socket.getOutputStream());
-					objectOutput.writeObject(click);
+	            	objectO = new ObjectOutputStream(socket.getOutputStream());
+					outQ.add(click);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-//				try {
-//					objectOutput.writeObject(click);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
 			}
 		}
 		
@@ -133,10 +148,10 @@ public class Game {
 		if(clientBoard!=null){
 			clientPlayer.draw();
 		}
+		UI.repaintGraphics();
 	}
 	 
 	private void sendMeme(){
-		PS.println("FUCK");
 		UI.println("Attempted to send a fuck");
 	}
 	

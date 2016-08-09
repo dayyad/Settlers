@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Click {
+public class Click implements Serializable {
 	public double x;
 	public double y;
 	public Player player;

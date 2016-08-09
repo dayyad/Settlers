@@ -1,11 +1,12 @@
 import java.awt.Color;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
 import ecs100.*;
 
-public class Player {
+public class Player implements Serializable{
 	String[] tileTypes = {"grain","ore","brick","wood","sheep","sea"}; 
 	
 	public Socket socket;
