@@ -14,6 +14,7 @@ public class Server  {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	
 	private boolean readyToStart=false;
+	private Board serverBoard = null;
 	
 	public Server (int port){
 		//Emptying the old arrays;
@@ -28,13 +29,15 @@ public class Server  {
 			while(true){
 				
 				Socket socket = serverSocket.accept();
-				Connection c = new Connection(socket);
+				Connection c = new Connection(socket,connections.size()+1);
 				connections.add(c);
 				c.start();
 				
 				UI.clearGraphics();
 				UI.setColor(Color.red);
+				UI.setFontSize(20);
 				UI.drawString(Integer.toString(connections.size()), 0, 0);
+				UI.repaintAllGraphics();
 				if(connections.size()>=2){
 					readyToStart=true;
 				} else {
@@ -43,6 +46,7 @@ public class Server  {
 				if(readyToStart){
 					UI.addButton("Start Game", this::startGame);
 				}
+				UI.println("got to here");
 			}
 			
 		} catch (IOException e){
@@ -53,9 +57,11 @@ public class Server  {
 	public class Connection extends Thread { // Thread for each client
 		private Socket s;
 		private boolean stayConnected = true;
+		private int id;
 		
-		public Connection(Socket s){
+		public Connection(Socket s,int id){
 			this.s=s;
+			this.id=id;
 		}
 		
 		public void run(){
@@ -63,35 +69,59 @@ public class Server  {
 			UI.println("New connection established.");
 			
 			Scanner scanner;
-        	ObjectInputStream objectInput;
-			ObjectOutputStream objectOutput;
+			PrintStream PS;
+        	ObjectInputStream objectI;
+			ObjectOutputStream objectO;
 			try {
-				scanner = new Scanner(s.getInputStream());
 				
+//				objectI = new ObjectInputStream(s.getInputStream());
+//				objectO = new ObjectOutputStream(s.getOutputStream());
 				while(stayConnected){ //Main connection loop
 					UI.println("connected");
+					
+					PS = new PrintStream(s.getOutputStream());
+					scanner = new Scanner(s.getInputStream());
 	            	
+					boolean followedByObject = false;
+					String followingObject;
+					
 	            	if(scanner.hasNextLine()){
 	            		String line = scanner.nextLine();
-	            		UI.println(line);
+	            		UI.println("Server: Recieved: " + line);
 	            		if(line.equals("click")){
-	            			UI.println("Click recieved");
+	            			objectI = new ObjectInputStream(s.getInputStream());
+	            			processClick((Click)objectI.readObject());
+	            		} else if (line.equals("")){
+	            			
 	            		}
 	            	}
+	            	
+	            	if(serverBoard!= null){
+	            		readyToStart=false;
+	            		PS.println("board");
+	            	}
+	            	
+	            	PS.println("player");
+	            	
 	                UI.sleep(1);
+	                scanner.close();
+	                PS.close();
 				}	
-				scanner.close();
 				
-			} catch (IOException e1) {
+				
+			} catch (IOException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
 		}
 	}
 	
+	private void processClick(Click click){
+		UI.println("Click from: "+click.player.id);
+	}	
+	
 	private void startGame(){
 		if(readyToStart){
-			Board board = new Board(30+UI.askInt("Board width: "),UI.askInt("Board height: "));
-			 
+			serverBoard = new Board(30+UI.askInt("Board width: "),UI.askInt("Board height: "));
 		}
 	}
 

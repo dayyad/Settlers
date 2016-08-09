@@ -63,7 +63,10 @@ public class Game {
 	}
 	
 	 public class Listener extends Thread {  //Waits for server and adds to the in queue
-	        @Override
+	        public void Listener(){
+	        	
+	        }
+	        
 	        public void run(){
 	        	//On connection happens here!
 	        	UI.println("Listener Started: ");
@@ -75,7 +78,7 @@ public class Game {
 	                    	if(line.equals("board")){ // In case of board being passed
 	                    		UI.println("recieving board package");
 	                    		//clientBoard=(Board)(objectInput.readObject());
-		                    } else if (line.equals("setPlayer")){
+		                    } else if (line.equals("player")){
 		                    	UI.println("recieving player package");
 		                    	//updatePlayer((Player)(objectInput.readObject()));
 		                    }
@@ -93,12 +96,20 @@ public class Game {
 	
 	private void doMouse(String action,double x, double y){
 		UI.println("Mouse pressed");
-		if(playing && connected){
+		if( connected){
 			if(action.equals("pressed")){
 				//Sends click packet to server
-				Click click = new Click(x,y);
+				Click click = new Click(x,y,this.clientPlayer);
 				UI.println("Sending click");
 				PS.println("click");
+				try {
+					objectOutput = new ObjectOutputStream(socket.getOutputStream());
+					objectOutput.writeObject(click);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 //				try {
 //					objectOutput.writeObject(click);
 //				} catch (IOException e) {
