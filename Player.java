@@ -7,23 +7,25 @@ import java.util.Map;
 import ecs100.*;
 
 public class Player implements Serializable{
-	String[] tileTypes = {"grain","ore","brick","wood","sheep","sea"}; 
-	
+	private static final long serialVersionUID = -7915690137851055604L;
+
+	String[] tileTypes = {"grain","ore","brick","wood","sheep","sea"};
+
 	public Socket socket;
 	private static int lastId =1;
 	public int id;
-	
+
 	private Map<String,Integer> inv = new HashMap<String, Integer>();
-	
+
 	public Player(Socket s){
-		
+
 		socket = s;
 		id = lastId++;
 		//brick,ore,grain,sheep,wood
 		inv.put("brick", 0);inv.put("ore", 0);inv.put("grain", 0);inv.put("sheep", 0);inv.put("wood", 0);
-	
+
 	}
-	
+
 	public void draw(){
 		for(int i =0; i < 5;i++){
 			UI.setColor(Color.black);

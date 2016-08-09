@@ -3,6 +3,8 @@ import java.io.Serializable;
 import ecs100.*;
 
 public class Board implements Serializable{
+	
+	private static final long serialVersionUID = 1448444599664122862L;
 	int width;
 	int height;
 	
