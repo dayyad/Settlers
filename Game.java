@@ -20,8 +20,8 @@ public class Game {
 	private ObjectInputStream objectInput;
 	private ObjectOutputStream objectOutput;
 	
-	private Board clientBoard;
-	private Player clientPlayer;
+	private Board clientBoard = null;
+	private Player clientPlayer = null;
 	
 	private boolean playing = false;
 	
@@ -48,8 +48,8 @@ public class Game {
 	            socket = new Socket(UI.askString("IP address"),UI.askInt("Port: ")); //Creates connection to socket
 	            scanner=new Scanner(socket.getInputStream());
 	            PS = new PrintStream(socket.getOutputStream());
-	            objectInput = new ObjectInputStream(socket.getInputStream());
-	            objectOutput = new ObjectOutputStream(socket.getOutputStream());
+	            //objectInput = new ObjectInputStream(socket.getInputStream());
+	            //objectOutput = new ObjectOutputStream(socket.getOutputStream());
 	            
 	            UI.addButton("Send meme", this::sendMeme);
 	            listener = new Listener();
@@ -71,17 +71,19 @@ public class Game {
 	            while(true){
 	                if(scanner.hasNextLine()){
 	                    String line = scanner.nextLine();
-	                    try {
+	                   // try {
 	                    	if(line.equals("board")){ // In case of board being passed
-	                    		clientBoard=(Board)(objectInput.readObject());
+	                    		UI.println("recieving board package");
+	                    		//clientBoard=(Board)(objectInput.readObject());
 		                    } else if (line.equals("setPlayer")){
-		                    	updatePlayer((Player)(objectInput.readObject()));
+		                    	UI.println("recieving player package");
+		                    	//updatePlayer((Player)(objectInput.readObject()));
 		                    }
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+						//} catch (ClassNotFoundException e) {
+						//	e.printStackTrace();
+						//} catch (IOException e) {
+						//	e.printStackTrace();
+						//}
 	                    
 	                    draw();
 	                }
@@ -97,11 +99,11 @@ public class Game {
 				Click click = new Click(x,y);
 				UI.println("Sending click");
 				PS.println("click");
-				try {
-					objectOutput.writeObject(click);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					objectOutput.writeObject(click);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
 			}
 		}
 		
@@ -113,8 +115,13 @@ public class Game {
 	}
 	
 	private void draw(){
-		clientBoard.draw();
-		clientPlayer.draw();
+		if(clientBoard!=null){
+			clientBoard.draw();
+		}
+		
+		if(clientBoard!=null){
+			clientPlayer.draw();
+		}
 	}
 	 
 	private void sendMeme(){

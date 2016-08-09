@@ -24,8 +24,9 @@ public class Server  {
 		UI.println("Server started:");
 		
 		try{
+			ServerSocket serverSocket = new ServerSocket(port);	
 			while(true){
-				ServerSocket serverSocket = new ServerSocket(port);	
+				
 				Socket socket = serverSocket.accept();
 				Connection c = new Connection(socket);
 				connections.add(c);
@@ -51,26 +52,25 @@ public class Server  {
 	
 	public class Connection extends Thread { // Thread for each client
 		private Socket s;
+		private boolean stayConnected = true;
 		
 		public Connection(Socket s){
 			this.s=s;
-			UI.println("New connection established.");
 		}
 		
 		public void run(){
 			Player player = new Player(s);
+			UI.println("New connection established.");
 			
-            while(true){
-            	Scanner scanner;
-            	ObjectInputStream objectInput;
-				ObjectOutputStream objectOutput;
-            	
-				try {
-					//Creates object and scanners IO for each client
-					objectInput=new ObjectInputStream(s.getInputStream());
-					objectOutput=new ObjectOutputStream(s.getOutputStream());
-					scanner = new Scanner(s.getInputStream());
-					
+			Scanner scanner;
+        	ObjectInputStream objectInput;
+			ObjectOutputStream objectOutput;
+			try {
+				scanner = new Scanner(s.getInputStream());
+				
+				while(stayConnected){ //Main connection loop
+					UI.println("connected");
+	            	
 	            	if(scanner.hasNextLine()){
 	            		String line = scanner.nextLine();
 	            		UI.println(line);
@@ -79,11 +79,12 @@ public class Server  {
 	            		}
 	            	}
 	                UI.sleep(1);
-	                
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-            }
+				}	
+				scanner.close();
+				
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
