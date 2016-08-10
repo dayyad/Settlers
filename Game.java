@@ -17,7 +17,7 @@ public class Game {
 	private Socket socket = null;
 	private Listener listener;
 
-	private Packet outPack = new Packet("server",null,null,null);
+	public Packet outPack = new Packet("server",0);
 
 	//Object IO for catching objects
 	private ObjectInputStream objectI;
@@ -53,8 +53,7 @@ public class Game {
 		if(socket!=null){
 			if(action.equals("pressed")){
 				//Sends click packet to server
-				Click click = new Click(x,y,this.clientPlayer);
-				this.outPack=new Packet("server",null,null,click);
+				this.outPack.setClick(x, y);
 				UI.println("Mouse pressed");
 
 			}
@@ -93,6 +92,8 @@ public class Game {
 
 	        public Listener(Game game) {
 				this.g=game;
+				g.clientPlayer=new Player();
+				outPack.setFromId(g.clientPlayer.id);
 			}
 
 
@@ -106,12 +107,13 @@ public class Game {
 					ObjectInputStream objI = new ObjectInputStream(socket.getInputStream());
 					 while(socket!=null){
 						 objO.writeObject(outPack);
+						 outPack.clear();
 						 Packet p = (Packet)objI.readObject();
 						 handlePacket(p);
 						 //Resets default pack variables.
-						 outPack=null;
 						 draw();
 			         }
+
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -120,9 +122,6 @@ public class Game {
 					e.printStackTrace();
 				}
 	        }
-
-
-
 
 	private void handlePacket(Packet p){
 		if(p!=null){

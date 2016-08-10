@@ -8,6 +8,8 @@ import ecs100.UI;
 public class ServerConnection extends Thread {
 	private Socket socket;
 	private Server server;
+	private int connectionId = 0;
+	private Packet outPack = new Packet("client",0);
 
 	public ServerConnection(Socket s,Server ss){
 		socket=s;
@@ -21,8 +23,8 @@ public class ServerConnection extends Thread {
 			ObjectOutputStream objO = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream objI = new ObjectInputStream(socket.getInputStream());
 			while(true){
-				Packet pOut = new Packet("player",null,server.serverBoard,null);
-				objO.writeObject(pOut);
+				objO.writeObject(outPack);
+				outPack.clear();
 				Packet p = (Packet)objI.readObject();
 				handlePacket(p);
 			}
@@ -38,11 +40,13 @@ public class ServerConnection extends Thread {
 
 	private void handlePacket(Packet p){
 		if(p !=null){
-			if (p.click!=null){
-				UI.println("Click recieved at: "+p.click.x + " " + p.click.y);
+			if(connectionId==0){
+				connectionId=p.fromId;
+				UI.println("connection id set to : "+ connectionId);
 			}
-			if(p.to.equals("server")){
-				UI.println("packet was meant for server.");
+
+			if(p.click!=null){ //TODO FIX THIS IT IS ALWAYS NULL.
+				UI.print("Click at: " + p.click.get("x") + " " + p.click.get("y"));
 			}
 		}
 	}
