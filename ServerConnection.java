@@ -22,6 +22,7 @@ public class ServerConnection {
 		listener=new Listener();
 		listener.start();
 		sender.start();
+		UI.initialise();
 
 	}
 
