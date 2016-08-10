@@ -22,7 +22,6 @@ public class ServerConnection {
 		listener=new Listener();
 		listener.start();
 		sender.start();
-		UI.initialise();
 
 	}
 
@@ -77,9 +76,10 @@ public class ServerConnection {
 			if(p.click!=null){ //TODO FIX THIS IT IS ALWAYS NULL.
 				double x = p.click.get("x");
 				double y = p.click.get("y");
+				UI.println("Click at: " + p.click.get("x") + " " + p.click.get("y"));
 				UI.setColor(Color.red);
-				UI.print("Click at: " + p.click.get("x") + " " + p.click.get("y"));
-				UI.drawOval(x, y, 10, 10);
+				UI.fillOval(x, y, 20, 20);
+				UI.repaintGraphics();
 			}
 		}
 	}
