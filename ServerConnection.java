@@ -66,6 +66,9 @@ public class ServerConnection {
 		}
 	}
 
+	private double lastX =0;
+	private double lastY =0;
+
 	private void handlePacket(Packet p){
 		if(p !=null){
 			if(connectionId==0){
@@ -77,9 +80,13 @@ public class ServerConnection {
 				double x = p.click.get("x");
 				double y = p.click.get("y");
 				UI.println("Click at: " + p.click.get("x") + " " + p.click.get("y"));
+				UI.setColor(Color.white);
+				UI.fillOval(lastX, lastY, 20, 20);
 				UI.setColor(Color.red);
 				UI.fillOval(x, y, 20, 20);
 				UI.repaintGraphics();
+				lastX=x;
+				lastY=y;
 			}
 		}
 	}

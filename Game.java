@@ -40,7 +40,7 @@ public class Game {
 
 		UI.addButton("Connect to Server", this::connectServer);
 		UI.addButton("Create Server", this::createServer);
-		UI.setMouseListener(this::doMouse);
+		UI.setMouseMotionListener(this::doMouse);
 	}
 
 	private void createServer(){
@@ -48,9 +48,8 @@ public class Game {
 	}
 
 	private void doMouse(String action,double x, double y){
-
 		if(socket!=null){
-			if(action.equals("pressed")){
+			if(action.equals("moved")){
 				//Sends click packet to server
 				Packet p = new Packet("server",0);
 				p.setClick(x, y);
