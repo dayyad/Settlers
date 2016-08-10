@@ -3,25 +3,25 @@ import java.io.Serializable;
 import ecs100.*;
 
 public class Board implements Serializable{
-	
+
 	private static final long serialVersionUID = 1448444599664122862L;
-	int width;
-	int height;
-	
-	double tileWidth = 50;
-	double tileHeight = 50 ;
-	
-	String[] tileTypes = {"grain","ore","brick","wood","sheep","sea"}; 
+	public int width;
+	public int height;
+
+	public double tileWidth = 150;
+	public double tileHeight = 150 ;
+
+	String[] tileTypes = {"grain","ore","brick","wood","sheep","sea"};
 	Tile[][] board;
-	
-	
+
+
 	public Board(int w,int h){
 		this.width =w;
 		this.height = h;
-		
+
 		generateBoard();
 	}
-	
+
 	public void draw(){
 		for(int x = 0; x<board.length;x++){
 			for(int y = 0; y < board[0].length;y++){
@@ -29,15 +29,24 @@ public class Board implements Serializable{
 			}
 		}
 	}
-	
+
 	private void generateBoard(){
 		board = new Tile[width][height];
 		for(int x =0; x <board.length;x++){
 			for(int y = 0;y< board[0].length;y++){
 				//sea sheep brick ore wood grain
-				board[x][y]=new Tile(tileTypes[(int)(Math.random()*6)],tileWidth*x,tileHeight*y);
-				
+				board[x][y]=new Tile(tileTypes[(int)(Math.random()*6)],tileWidth*x,tileHeight*y,tileWidth,tileHeight);
+
 			}
 		}
 	}
+
+	public void setBoard(int width,int height,Tile[][] tiles){
+		this.width=width;
+		this.height=height;
+		generateBoard();
+		this.board=tiles;
+		draw();
+	}
+
 }

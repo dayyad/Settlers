@@ -9,7 +9,7 @@ public class Packet implements Serializable{
 	public int fromId;
 	public Map<String,Integer> inv = new HashMap<String,Integer>();
 	public Map<String,Double> click = new HashMap<String,Double>();
-
+	public Board board;
 
 	public Packet(String to,int fromId){
 
@@ -17,7 +17,12 @@ public class Packet implements Serializable{
 		this.click=null;
 		this.fromId = fromId;
 		this.to=to;
+		this.board=null;
 
+	}
+
+	public void setBoard(Board board){
+		this.board=board;
 	}
 
 	public void setInv(Map<String,Integer> inv){

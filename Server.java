@@ -18,6 +18,7 @@ public class Server  {
 
 	public Server (int port){
 		//Emptying the old arrays;
+		serverBoard=new Board(UI.askInt("Board width: "),UI.askInt("Board height: "));
 		connections = new ArrayList<ServerConnection>();
 		players = new ArrayList<Player>();
 

@@ -32,6 +32,7 @@ public class ServerConnection {
 			try {
 				ObjectOutputStream objO = new ObjectOutputStream(socket.getOutputStream());
 				while(true){
+					outPack.setBoard(server.serverBoard);
 					objO.writeObject(outPack);
 					outPack.clear();
 				}

@@ -40,6 +40,7 @@ public class Game {
 
 		UI.addButton("Connect to Server", this::connectServer);
 		UI.addButton("Create Server", this::createServer);
+		//UI.addButton("Start game", this::startGame);
 		UI.setMouseMotionListener(this::doMouse);
 	}
 
@@ -49,7 +50,7 @@ public class Game {
 
 	private void doMouse(String action,double x, double y){
 		if(socket!=null){
-			if(action.equals("moved")){
+			if(action.equals("pressed")){
 				//Sends click packet to server
 				Packet p = new Packet("server",0);
 				p.setClick(x, y);
@@ -68,6 +69,11 @@ public class Game {
 			clientPlayer.draw();
 		}
 		UI.repaintGraphics();
+	}
+
+	private void startGame(){
+		Board asd = new Board(2,2);
+		asd.draw();
 	}
 
 	private void connectServer(){
@@ -121,7 +127,10 @@ public class Game {
 
 		private void handlePacket(Packet p){
 			if(p!=null){
-
+				if(p.board!=null){
+					clientBoard=p.board;
+					draw();
+				}
 			}
 		}
 	}
