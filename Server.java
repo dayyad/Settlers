@@ -29,7 +29,6 @@ public class Server  {
 			while(true){
 					ServerConnection sc = new ServerConnection(serverSocket.accept(),this);
 					connections.add(sc);
-					sc.start();
 					UI.println("server connection accepted.");
 			}
 

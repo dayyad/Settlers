@@ -1,3 +1,6 @@
 /Packet.class
 /Click.class
 /ServerConnection.class
+/Game$Sender.class
+/ServerConnection$Listener.class
+/ServerConnection$Sender.class
