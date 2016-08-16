@@ -64,10 +64,6 @@ public class Game {
 		if(clientBoard!=null){
 			clientBoard.draw();
 		}
-
-		if(clientBoard!=null){
-			clientPlayer.draw();
-		}
 		UI.repaintGraphics();
 	}
 
