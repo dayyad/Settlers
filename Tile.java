@@ -10,6 +10,7 @@ public class Tile implements Serializable {
 	private double y;
 	private double width;
 	private double height;
+	private final int prob;
 	public String type;
 
 	public Tile(String type,double x,double y,double w, double h){
@@ -18,6 +19,51 @@ public class Tile implements Serializable {
 		this.width=w;
 		this.height=h;
 		this.type = type;
+		this.prob = (int)(Math.random()*12);
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public int getProb() {
+		return prob;
 	}
 
 	public void draw(){

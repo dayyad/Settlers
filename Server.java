@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 
 public class Server  {
@@ -30,6 +32,7 @@ public class Server  {
 			while(true){
 					ServerConnection sc = new ServerConnection(serverSocket.accept(),this);
 					connections.add(sc);
+					players.add(new Player( ));
 					UI.println("server connection accepted.");
 			}
 
@@ -38,4 +41,7 @@ public class Server  {
 		}
 	}
 
+	public void addPlayer(Player p){
+
+	}
 }

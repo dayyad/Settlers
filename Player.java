@@ -31,4 +31,8 @@ public class Player implements Serializable{
 			UI.drawString(tileTypes[i] + ": "+inv.get(tileTypes[i]),i*20, 0);
 		}
 	}
+
+	public Map<String,Integer> getInv(){
+		return this.inv;
+	}
 }

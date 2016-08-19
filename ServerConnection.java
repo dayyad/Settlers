@@ -9,7 +9,8 @@ import ecs100.UI;
 public class ServerConnection {
 	private Socket socket;
 	private Server server;
-	private int connectionId = 0;
+	private final int connectionId;
+	private static int lastId =1;
 	private Packet outPack = new Packet("client",0);
 
 	private Sender sender;
@@ -22,6 +23,7 @@ public class ServerConnection {
 		listener=new Listener();
 		listener.start();
 		sender.start();
+		connectionId = lastId++;
 
 	}
 
@@ -33,8 +35,10 @@ public class ServerConnection {
 				ObjectOutputStream objO = new ObjectOutputStream(socket.getOutputStream());
 				while(true){
 					outPack.setBoard(server.serverBoard);
+					outPack.setInv(server.players.get(connectionId).getInv()); //Sends player their inventory
 					objO.writeObject(outPack);
 					outPack.clear();
+					UI.sleep(10); //Pauses to optimize program a little.
 				}
 
 			} catch (IOException e) {
@@ -72,10 +76,6 @@ public class ServerConnection {
 
 	private void handlePacket(Packet p){
 		if(p !=null){
-			if(connectionId==0){
-				connectionId=p.fromId;
-				UI.println("connection id set to : "+ connectionId);
-			}
 
 			if(p.click!=null){ //TODO FIX THIS IT IS ALWAYS NULL.
 				double x = p.click.get("x");
