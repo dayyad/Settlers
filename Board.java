@@ -21,6 +21,20 @@ public class Board implements Serializable{
 
 		generateBoard();
 	}
+	
+	public String on(double mouseX, double mouseY){
+		String on = null;
+			for(int tileX=0;tileX<board.length;tileX++){
+				for(int tileY = 0;tileY<board[0].length;tileY++){
+					Tile tile = board[tileX][tileY];
+					//If click within tile boundary, return tile type.
+					if(mouseX<tile.getX()+tileWidth && mouseX>tile.getX()&&mouseY>tile.getY()&&mouseY<tile.getY()+tileHeight){
+						return tile.getType();
+					}
+				}
+			}
+		return on;
+	}
 
 	public void draw(){
 		for(int x = 0; x<board.length;x++){

@@ -10,13 +10,15 @@ public class ServerConnection {
 	private Socket socket;
 	private Server server;
 	private final int connectionId;
-	private static int lastId =1;
+	private static int lastId =0;
 	private Packet outPack = new Packet("client",0);
+	private Player player;
 
 	private Sender sender;
 	private Listener listener;
 
 	public ServerConnection(Socket s,Server ss){
+		player=new Player();
 		socket=s;
 		server=ss;
 		sender=new Sender();
@@ -25,6 +27,10 @@ public class ServerConnection {
 		sender.start();
 		connectionId = lastId++;
 
+	}
+	
+	public Player getPlayer(){
+		return player;
 	}
 
 	public class Sender extends Thread{
@@ -35,7 +41,7 @@ public class ServerConnection {
 				ObjectOutputStream objO = new ObjectOutputStream(socket.getOutputStream());
 				while(true){
 					outPack.setBoard(server.serverBoard);
-					outPack.setInv(server.players.get(connectionId).getInv()); //Sends player their inventory
+					outPack.setInv(player.getInv());
 					objO.writeObject(outPack);
 					outPack.clear();
 					UI.sleep(10); //Pauses to optimize program a little.
@@ -88,6 +94,12 @@ public class ServerConnection {
 				UI.repaintGraphics();
 				lastX=x;
 				lastY=y;
+				
+				String clickHit = server.serverBoard.on(x,y);
+				if(clickHit!=null && !clickHit.equals("sea")){
+					UI.println("Click on: "+clickHit);
+					player.addToInv(clickHit, 1);
+				}
 			}
 		}
 	}

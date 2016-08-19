@@ -10,6 +10,5 @@ public class Click implements Serializable {
 		this.x=x;
 		this.y=y;
 		this.player=p;
-
 	}
 }

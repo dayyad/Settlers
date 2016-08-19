@@ -32,7 +32,7 @@ public class Server  {
 			while(true){
 					ServerConnection sc = new ServerConnection(serverSocket.accept(),this);
 					connections.add(sc);
-					players.add(new Player( ));
+					players.add(sc.getPlayer());
 					UI.println("server connection accepted.");
 			}
 

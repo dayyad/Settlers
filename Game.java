@@ -64,6 +64,11 @@ public class Game {
 		if(clientBoard!=null){
 			clientBoard.draw();
 		}
+		
+		if(clientPlayer!=null){
+			clientPlayer.draw();
+		}
+		
 		UI.repaintGraphics();
 	}
 
@@ -127,6 +132,8 @@ public class Game {
 					clientBoard=p.board;
 					draw();
 				}
+				
+				clientPlayer.setInv(p.getInv());
 			}
 		}
 	}

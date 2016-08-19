@@ -24,23 +24,18 @@ public class Packet implements Serializable{
 	public void setBoard(Board board){
 		this.board=board;
 	}
+	
+	public Map<String,Integer> getInv(){
+		return this.inv;
+	}
 
 	public void setInv(Map<String,Integer> inv){
-		if(inv!=null){
-			this.inv.clear();
-			this.inv.put("ore",inv.get("ore"));
-			this.inv.put("grain",inv.get("grain"));
-			this.inv.put("brick",inv.get("brick"));
-			this.inv.put("sheep",inv.get("sheep"));
-			this.inv.put("wood",inv.get("wood"));
-		} else {
-			inv = new HashMap<String,Integer>();
-			this.inv.put("ore",inv.get("ore"));
-			this.inv.put("grain",inv.get("grain"));
-			this.inv.put("brick",inv.get("brick"));
-			this.inv.put("sheep",inv.get("sheep"));
-			this.inv.put("wood",inv.get("wood"));
-		}
+		this.inv = new HashMap<String,Integer>();
+		this.inv.put("ore",inv.get("ore"));
+		this.inv.put("grain",inv.get("grain"));
+		this.inv.put("brick",inv.get("brick"));
+		this.inv.put("sheep",inv.get("sheep"));
+		this.inv.put("wood",inv.get("wood"));
 	}
 
 	public void setFromId(int id){
