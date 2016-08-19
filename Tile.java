@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class Tile implements Serializable {
 		this.width=w;
 		this.height=h;
 		this.type = type;
-		this.prob = (int)(Math.random()*12);
+		this.prob = (int)(Math.random()*10+2);
 	}
 
 	public double getX() {
@@ -68,5 +69,10 @@ public class Tile implements Serializable {
 
 	public void draw(){
 		UI.drawImage("./assets/hex_"+type+".png",x,y,width,height);
+		UI.setColor(Color.red);
+		if(!type.equals("sea")){
+			UI.setFontSize(30);
+			UI.drawString(Integer.toString(prob), x + width/2, y + height/2);
+		}
 	}
 }

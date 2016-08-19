@@ -44,7 +44,7 @@ public class ServerConnection {
 					outPack.setInv(player.getInv());
 					objO.writeObject(outPack);
 					outPack.clear();
-					UI.sleep(10); //Pauses to optimize program a little.
+					UI.sleep(100); //Pauses to optimize program a little.
 				}
 
 			} catch (IOException e) {

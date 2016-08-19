@@ -68,7 +68,7 @@ public class Game {
 		if(clientPlayer!=null){
 			clientPlayer.draw();
 		}
-		
+
 		UI.repaintGraphics();
 	}
 
@@ -113,7 +113,6 @@ public class Game {
 				while(socket!=null){
 					Packet p = (Packet)objI.readObject();
 					handlePacket(p);
-					draw();
 					System.out.println("s");
 				}
 
@@ -129,11 +128,14 @@ public class Game {
 		private void handlePacket(Packet p){
 			if(p!=null){
 				if(p.board!=null){
+					if(!p.board.equals(clientBoard))
 					clientBoard=p.board;
-					draw();
+					draw(); //Only redraws if change detected
 				}
-				
-				clientPlayer.setInv(p.getInv());
+				if(!clientPlayer.getInv().equals(p.getInv())){
+					clientPlayer.setInv(p.getInv());
+					draw(); //Only redraws if change detected
+				}
 			}
 		}
 	}
