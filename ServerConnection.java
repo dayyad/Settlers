@@ -33,6 +33,10 @@ public class ServerConnection {
 		return player;
 	}
 
+	/**
+	 * Thread that sends packates to the client
+	 * once again this is not nessecary as there can be a individual sendPackate method
+     */
 	public class Sender extends Thread{
 		public Sender(){}
 
@@ -54,6 +58,9 @@ public class ServerConnection {
 		}
 	}
 
+	/**
+	 * Thread that listenes to the client
+     */
 	public class Listener extends Thread{
 		public Listener(){}
 
@@ -104,6 +111,9 @@ public class ServerConnection {
 		}
 	}
 
+	/**
+	 * Starts the game on the server
+      */
 	private void startGame(){
 		if(server.readyToStart){
 			server.serverBoard = new Board(30+UI.askInt("Board width: "),UI.askInt("Board height: "));
