@@ -11,7 +11,7 @@ public class Player implements Serializable{
 
 	String[] tileTypes = {"grain","ore","brick","wood","sheep","sea"};
 
-	public Socket socket;
+	public Socket socket; //is this needed??
 	private static int lastId =0;
 	public int id;
 

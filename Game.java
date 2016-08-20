@@ -44,6 +44,9 @@ public class Game {
 		UI.setMouseMotionListener(this::doMouse);
 	}
 
+	/**
+	 * creates a new Server on the current computer with an inputted port number
+     */
 	private void createServer(){
 		Server server = new Server(UI.askInt("Port: "));
 	}
@@ -60,6 +63,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Draws the Clients board
+     */
 	private void draw(){
 		if(clientBoard!=null){
 			clientBoard.draw();
@@ -72,6 +78,9 @@ public class Game {
 		UI.repaintGraphics();
 	}
 
+	/**
+	 * Starts the game. by makeing a new board with 2, 2 then drawing it
+     */
 	private void startGame(){
 		Board asd = new Board(2,2);
 		asd.draw();
@@ -95,6 +104,9 @@ public class Game {
 	        }
 	}
 
+	/**
+	 * Thread that listenes to the server
+     */
 	public class Listener extends Thread {  //Waits for server and adds to the in queue
 		Game g;
 
@@ -102,6 +114,9 @@ public class Game {
 			this.g=game;
 		}
 
+		/**
+		 * goes in to an infinate loop looking for packates then drawing them
+         */
 		public void run(){
 			//On connection happens here!
 			UI.println("Listener Started: ");
@@ -125,6 +140,10 @@ public class Game {
 			}
 		}
 
+		/**
+		 * draws the board from the passed package
+		 * @param p
+         */
 		private void handlePacket(Packet p){
 			if(p!=null){
 				if(p.board!=null){
@@ -140,6 +159,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Thead that sends packets to the server
+     */
 	public class Sender extends Thread{
 		private ArrayList<Packet> packQue = new ArrayList<Packet>();
 		Game g;
@@ -152,6 +174,10 @@ public class Game {
 			packQue.add(p);
 		}
 
+		/**
+		 * Loops continuously untill there is a packet to send then sends it then continues to loop
+		 * TODO doesnt accutally need a loop. It can send a packet when a method is called.
+         */
 		public void run(){
 
 			try {
