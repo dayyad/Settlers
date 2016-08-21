@@ -4,3 +4,5 @@
 /Game$Sender.class
 /ServerConnection$Listener.class
 /ServerConnection$Sender.class
+/*.class
+/out
