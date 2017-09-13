@@ -1,7 +1,6 @@
 #Settlers
 
-settlers of catan made in Java had a server and clent relationship all starting from the Game class
+An early attempt to build a game with networking functionality that resembles the classic "Settlers of Katan" board game. 
 
-##TODO
-
-Its easier if the tiles does not have any margin on the images. 
+This project was a way for me to try and recreate something I really like playing the physical version of. ##TODO
+ 
