@@ -1,3 +1,4 @@
+package src;
 import ecs100.UI;
 
 import java.io.IOException;

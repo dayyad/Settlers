@@ -1,3 +1,4 @@
+package src;
 import java.io.Serializable;
 
 import ecs100.*;
