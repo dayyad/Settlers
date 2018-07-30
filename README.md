@@ -1,3 +1,10 @@
+
+## A quick note
+
+
+I created this during my first year of University when I was first getting used to the Java programming language. Doing little projects such as these was critical in helping me build my knowledge in the Java programming language, and helped keep my enthusiasm for programmign alive.
+
+
 # Settlers
 
 An early attempt to build a game with networking functionality that resembles the classic "Settlers of Catan" board game. 
